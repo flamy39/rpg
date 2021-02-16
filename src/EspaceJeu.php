@@ -11,11 +11,12 @@ class EspaceJeu {
     const ESPACE_DEBUT_NUMEROS_COLONNE = '    ';
     const SEPARATEUR_POSITION = " | ";
     const LONGUEUR_TITRE = 80;
+    public const POSITION_HERO = 'H';
 
     private int $longueur;
     private int $largeur;
 
-    private ?Hero $hero=null;
+    private ?Hero $hero = null;
 
     /**
      * EspaceJeu constructor.
@@ -35,13 +36,12 @@ class EspaceJeu {
         return $espaceJeuString;
     }
 
-    public function positionnerHero(int $x, int $y) {
+    public function positionnerHero(string $nom, int $energie, int $x, int $y) {
 
-        if ($this->estDansEspaceJeu($x, $y)) {
-            $this->hero = new Hero($x,$y);
-        } else {
-            $this->hero = new Hero(rand(0,$this->longueur-1),rand(0,$this->largeur-1));
-        }
+        if ($this->estDansEspaceJeu($x, $y))
+            $this->hero = new Hero($nom,$energie,$x,$y);
+        else
+            $this->hero = new Hero($nom,$energie,rand(0,$this->longueur-1),rand(0,$this->largeur-1));
     }
 
     /**
@@ -52,7 +52,7 @@ class EspaceJeu {
         $informations = $this->visualiserTitre('INFOS MAP','-',Couleurs::GREEN);
         $informations .= 'Dimensions map : (' . $this->longueur.','.$this->largeur.')'.PHP_EOL;
         $informations .= 'Vide : ' . Couleurs::YELLOW . self::POSITION_VIDE . Couleurs::RESET . PHP_EOL;
-        $informations .= 'Héro : ' . Hero::POSITION_HERO . PHP_EOL;
+        $informations .= ($this->existeHero()) ? $this->hero->getInformations().PHP_EOL : 'Hero : ' . self::POSITION_HERO .PHP_EOL;
         $informations .= 'Obstacle : ' . self::POSITION_OBSTACLE . PHP_EOL;
         $informations .= 'Personnage : ' . self::POSITION_PERSONNAGE . PHP_EOL;
         return $informations;
@@ -144,7 +144,8 @@ class EspaceJeu {
      */
     private function existeHero(): bool
     {
-        return $this->hero !== null;
+        //return $this->hero !== null;
+        return !is_null($this->hero);
     }
 
     /**
@@ -166,7 +167,7 @@ class EspaceJeu {
     {
         $marque = '';
         if ($this->existeHeroEnPosition($x, $y)) {
-            $marque = Hero::POSITION_HERO;
+            $marque = self::POSITION_HERO;
         } else {
             $marque = self::POSITION_VIDE;
         }
@@ -182,4 +183,6 @@ class EspaceJeu {
     {
         return ($x >= 0 && $x < $this->longueur) && ($y >= 0 && $y < $this->largeur);
     }
+
+
 }
