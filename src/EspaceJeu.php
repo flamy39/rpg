@@ -97,9 +97,9 @@ class EspaceJeu {
      */
     private function visualiserInformations(): string
     {
-        $informations = $this->visualiserTitre('INFOS MAP','-',Couleurs::GREEN);
+        $informations = $this->visualiserTitre('INFOS MAP','-',Couleurs::YELLOW);
         $informations .= 'Dimensions map : (' . $this->longueur.','.$this->largeur.')'.PHP_EOL;
-        $informations .= 'Vide : ' . Couleurs::YELLOW . self::POSITION_VIDE . Couleurs::RESET . PHP_EOL;
+        $informations .= 'Vide : ' . self::POSITION_VIDE . PHP_EOL;
         $informations .= ($this->existeHero()) ? $this->hero->getInformations().PHP_EOL : 'Hero : ' . self::POSITION_HERO .PHP_EOL;
         $informations .= 'Obstacle : ' . self::POSITION_OBSTACLE . ' (' . sizeof($this->obstacles) . ')' . ' Bonus : ('. $this->calculerBonusObstacles(). ')'.PHP_EOL;
         $informations .= 'Personnage : ' . self::POSITION_PERSONNAGE . PHP_EOL;
@@ -124,7 +124,7 @@ class EspaceJeu {
     {
         $numerosColonne = self::ESPACE_DEBUT_NUMEROS_COLONNE;
         for ($x = 0; $x < $this->longueur; $x++) {
-            $numerosColonne .= Couleurs::BLUE . sprintf('  %02d', $x) . Couleurs::RESET;
+            $numerosColonne .= Couleurs::LIGHT_MAGENTA . sprintf('  %02d', $x) . Couleurs::RESET;
         }
         $numerosColonne .= PHP_EOL;
         return $numerosColonne;
@@ -181,7 +181,7 @@ class EspaceJeu {
         }
         $longueurRemplissageGauche = round($longueurRemplissage / 2);
         $titre .= str_repeat($caractereRemplissage,$longueurRemplissageGauche);
-        $titre .= Couleurs::YELLOW . $texte . Couleurs::RESET;
+        $titre .= $couleur . $texte . Couleurs::RESET;
         $titre .= str_repeat($caractereRemplissage,$longueurRemplissageGauche);
         $titre .= PHP_EOL;
         return $titre;
@@ -213,13 +213,11 @@ class EspaceJeu {
      */
     private function recupererMarquePosition(int $x, int $y): string
     {
-        //$marque = '';
+        $marque = self::POSITION_VIDE;
         if ($this->existeHeroEnPosition($x, $y)) {
             $marque = self::POSITION_HERO;
         } else if ($this->existeObstacleEnPosition($x,$y)) {
             $marque = self::POSITION_OBSTACLE;
-        } else {
-            $marque = self::POSITION_VIDE;
         }
         return $marque;
     }
