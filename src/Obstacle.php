@@ -10,16 +10,15 @@ class Obstacle
 
     /**
      * Obstacle constructor.
-     * @param bool $franchissable
      * @param int $x
      * @param int $y
      */
-    public function __construct(bool $franchissable, int $x, int $y)
+    public function __construct(int $x, int $y)
     {
-        $this->franchissable = $franchissable;
+        $this->franchissable = rand(1,100) % 2 === 0;
         $this->x = $x;
         $this->y = $y;
-        $this->bonus = ($franchissable) ? rand(-10,10) : 0;
+        $this->bonus = ($this->franchissable) ? rand(-10,10) : 0;
     }
 
     /**

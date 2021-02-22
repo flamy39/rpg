@@ -86,10 +86,8 @@ class EspaceJeu {
                 $obstacleY = rand(0,$this->largeur-1);
             }
             // --- créer l'obstacle avec la position calculée
-            $franchissable = rand(1,100) % 2 === 0;
-            //$bonus = ($franchissable) ? rand(1,10) : 0;
-            $obstacle = new Obstacle($franchissable,$obstacleX,$obstacleY);
-            // --- ajouter l'obstacleau tableau des obstacles
+            $obstacle = new Obstacle($obstacleX,$obstacleY);
+            // --- ajouter l'obstacle au tableau des obstacles
             $this->obstacles [] = $obstacle;
         }
     }
@@ -150,14 +148,13 @@ class EspaceJeu {
      */
     private function visualiserLigne(int $numeroLigne): string
     {
-        $ligne = Couleurs::BLUE . sprintf('  %02d', $numeroLigne) . Couleurs::RESET;
+        $ligne = $this->visualiserNumeroLigne($numeroLigne);
         for ($x = 0; $x < $this->longueur; $x++) {
-            $ligne .= self::SEPARATEUR_POSITION. $this->recupererMarquePosition($x, $numeroLigne);
+            $ligne .= $this->visualiserPosition($x, $numeroLigne);
         }
         $ligne .= self::SEPARATEUR_POSITION . PHP_EOL;
         return $ligne;
     }
-
 
     /**
      * @return string
@@ -287,5 +284,24 @@ class EspaceJeu {
             $bonus += $obstacle->getBonus();
         }
         return $bonus;
+    }
+
+    /**
+     * @param int $numeroLigne
+     * @return string
+     */
+    private function visualiserNumeroLigne(int $numeroLigne): string
+    {
+        return Couleurs::BLUE . sprintf('  %02d', $numeroLigne) . Couleurs::RESET;
+    }
+
+    /**
+     * @param int $x
+     * @param int $numeroLigne
+     * @return string
+     */
+    private function visualiserPosition(int $x, int $numeroLigne): string
+    {
+        return self::SEPARATEUR_POSITION . $this->recupererMarquePosition($x, $numeroLigne);
     }
 }
